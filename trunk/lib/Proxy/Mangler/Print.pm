@@ -1,7 +1,9 @@
+# $Id$
+
 package Proxy::Mangler::Print;
 
-use strict;
 use warnings;
+use strict;
 
 my %requests;
 

@@ -1,6 +1,9 @@
+# $Id$
+
 package Proxy::Mangler::Cache;
-use strict;
+
 use warnings;
+use strict;
 
 use Digest::SHA1 qw(sha1_hex);
 use Storable qw(nfreeze thaw);
