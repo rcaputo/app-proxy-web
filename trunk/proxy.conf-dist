@@ -1,0 +1,44 @@
+# Sample configuration file for shproxy.pl.
+# Copy it to ./proxy.conf before editing.
+
+# Each section supports three other directives: block_host
+# block_machine and block_pq.
+
+# block_host directives can be used to block proxying or reporting by
+# an URI's host name.  They are matched like /\Q$host$/, which means
+# they may be used to block entire domains.  For example, blocking
+# extreme-dm.com will also block out all the machines at that domain.
+# Because domains are passed through quotemeta(), you must not escape
+# periods.
+
+# block_machine is like block_host, except they are matched like
+# /^host/, so you could block www.advogato.org and www.advogato.net at
+# the same time
+
+# block_pq directives contain regular expressions that are matched
+# against the path+query fields of each URI.  You must escape periods
+# and other regular expression metacharacters in block_pq values.
+
+# The proxy section supports a cache_dir directive.  Point it at a
+# created directory, and the proxy will cache everything there.
+# Caching is currently incomplete; it does not honor HTTP cache
+# control directives properly, so the best you can do is shift+reload
+# to refetch a cached page.  It doesn't even expire old cached items.
+# I currently recommend avoiding the feature except for occasionally
+# going "woah, hey, cool".
+
+# The proxy section also supports a noproxy_host directive for things
+# you do want to visit, but don't like being processed through the
+# proxy. you can use this for things the proxy doesn't know how to
+# handle, like hosts the proxy can't resolve. These are being used in
+# the proxy autoconfiguration script, which is available from
+# http://<proxyhost>:<ListenPort>/conf.pac (currently it assumes
+# proxyhost is localhost
+
+proxy
+	name          proxy-section
+	ListenPort    8088
+	block_machine example.com
+	block_host    example.com
+	noproxy_host  localhost
+	block_pq      /ads?/
