@@ -25,7 +25,8 @@ use Proxy::Mangler::Cache;
 use Proxy::Mangler::Print;
 
 sub TEXT_ONLY  () { 1 }  # Only report text/* things.
-sub TRACE_HTTP () { 0 }  # Trace HTTP request/response headers.
+sub TRACE_HTTP () { 1 }  # Trace HTTP request/response headers.
+sub TRACE_DATA () { 1 }  # Count data that we stream.
 
 # Define the format of our configuration file.
 Proxy::Conf->associate_type_with_schema(
@@ -37,16 +38,6 @@ Proxy::Conf->associate_type_with_schema(
 			block_machine => LIST,
 			noproxy_host  => LIST,
 			cache_dir     => SCALAR,
-		},
-		bot => {
-			Nick          => SCALAR | REQUIRED,
-			Server        => LIST   | REQUIRED,
-			Username      => SCALAR | REQUIRED,
-			Ircname       => SCALAR,
-			Channel       => SCALAR | REQUIRED,
-			block_host    => LIST,
-			block_machine => LIST,
-			block_pq      => LIST,
 		},
 	},
 );
@@ -87,7 +78,7 @@ foreach my $proxy_name (@proxies) {
 		Alias        => "$proxy_name",
 		Port         => $proxy_conf{ListenPort},
 		ClientFilter => 'POE::Filter::HTTPD',
-		Args         => [ $proxy_name ],
+		ClientArgs   => [ $proxy_name ],
 
 		ClientConnected => \&handle_http_connect,
 		ClientInput     => \&handle_http_request,
@@ -173,6 +164,8 @@ sub regenerate_manglers {
 
 sub regenerate_proxy_conf {
 	my ($proxy_name, %proxy_conf) = @_;
+
+	$proxy_conf{cache_dir} ||= "";
 
 	$proxy{$proxy_name} = {
 		cache_dir   => $proxy_conf{cache_dir},
@@ -332,6 +325,10 @@ sub handle_http_response {
 	# Send content, if we have it.  The client connection should
 	# always be in stream mode by this point.
 	if (defined $data) {
+		if (TRACE_DATA) {
+			use bytes;
+			print "Chunk of ", length($data), " octets.\n";
+		}
 		$heap->{client}->put($data);
 		return;
 	}

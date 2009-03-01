@@ -22,7 +22,7 @@ our %EXPORT_TAGS = (all => \@EXPORT_OK);
 # Generate a regular expression from a list of constant strings.
 # TODO Rocco has a way to make optimal regexps from strings.
 sub generate_host_regexp {
-	return unless @_;
+	return undef unless @_;
 	my $regexp = (
 		"\.?(?:" .
 		join( "|", map { quotemeta } sort { length($b) <=> length($a) } @_ ) .
@@ -34,7 +34,7 @@ sub generate_host_regexp {
 # Combine several regular expressions into one, by combining them with
 # an alternation.
 sub generate_pq_regexp {
-	return unless @_;
+	return undef unless @_;
 	my $regexp = (
 		"(?:" .
 		join( "|", sort { length($b) <=> length($a) } @_ ) .
@@ -47,7 +47,7 @@ sub generate_pq_regexp {
 # an alternation.  This regexp is anchored at the beginning of the
 # string.
 sub generate_mach_regexp {
-	return unless @_;
+	return undef unless @_;
 	my $regexp = (
 		"^(?:" .
 		join( "|", sort { length($b) <=> length($a) } @_ ) .
