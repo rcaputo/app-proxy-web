@@ -1,0 +1,7 @@
+This is a POE-based streaming web proxy, with content rewriting and
+filtering, among other things.  It started out as a combined web proxy
+and IRC bot, and it may have some vestiges of the IRC client
+remaining.
+
+The intent is to work this into a proper web proxy, then release it as
+a CPAN module and application.
