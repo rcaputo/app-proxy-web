@@ -1,5 +1,3 @@
-# $Id$
-
 # Configuration reading and holding.  This is second-system in full
 # effect.
 #

@@ -1,5 +1,3 @@
-# $Id$
-
 package Proxy::Mangler::Print;
 
 use warnings;

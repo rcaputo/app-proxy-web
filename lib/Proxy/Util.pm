@@ -1,5 +1,3 @@
-# $Id$
-
 package Proxy::Util;
 
 use warnings;

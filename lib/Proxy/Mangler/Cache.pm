@@ -1,5 +1,3 @@
-# $Id$
-
 package Proxy::Mangler::Cache;
 
 use warnings;
